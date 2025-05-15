@@ -78,6 +78,8 @@ function App() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [orderDetailsForConfirmation, setOrderDetailsForConfirmation] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const navigateTo = (view, data = null) => {
     console.log(`Navegando a: ${view}`, data ? `con datos: ${JSON.stringify(data)}` : '');
@@ -168,7 +170,13 @@ function App() {
     console.log("Renderizando vista:", currentView);
     switch (currentView) {
       case 'products':
-        return <ProductList setCurrentView={navigateTo} addToCart={addToCart} />;
+        return <ProductList 
+                  setCurrentView={navigateTo} 
+                  addToCart={addToCart} 
+                  searchTerm={searchTerm} 
+                  selectedCategory={selectedCategory} 
+                  setSelectedCategory={setSelectedCategory} 
+               />;
       case 'productDetail':
         return <ProductDetail productId={selectedProductId} setCurrentView={navigateTo} addToCart={addToCart} />;
       case 'cart':
@@ -183,13 +191,24 @@ function App() {
         return <div className="container mx-auto p-8 text-center"><h1 className="text-2xl font-semibold">Mi Perfil</h1><p className="text-gray-600 mt-4">Próximamente: Detalles de usuario, historial de pedidos, direcciones.</p></div>;
       default:
         console.warn(`Vista desconocida: ${currentView}, mostrando productos.`);
-        return <ProductList setCurrentView={navigateTo} addToCart={addToCart} />;
+        return <ProductList 
+                  setCurrentView={navigateTo} 
+                  addToCart={addToCart} 
+                  searchTerm={searchTerm} 
+                  selectedCategory={selectedCategory} 
+                  setSelectedCategory={setSelectedCategory} 
+               />;
     }
   };
 
   return (
     <div className="font-sans bg-gray-100 min-h-screen flex flex-col antialiased">
-      <Header setCurrentView={navigateTo} cartItemCount={cartItemCount} />
+      <Header 
+        setCurrentView={navigateTo} 
+        cartItemCount={cartItemCount} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm} 
+      />
       <main className="flex-grow">
         {renderView()}
       </main>
