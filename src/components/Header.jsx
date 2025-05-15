@@ -8,8 +8,10 @@ import ShoppingCartIcon from './ShoppingCartIcon';
  * @param {number} cartItemCount - Número total de artículos en el carrito.
  * @param {string} searchTerm - El término de búsqueda actual.
  * @param {function} setSearchTerm - Función para actualizar el término de búsqueda.
+ * @param {object} currentUser - El usuario actualmente logueado (o null).
+ * @param {function} logoutUser - Función para desloguear al usuario.
  */
-const Header = ({ setCurrentView, cartItemCount, searchTerm, setSearchTerm }) => {
+const Header = ({ setCurrentView, cartItemCount, searchTerm, setSearchTerm, currentUser, logoutUser }) => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -26,7 +28,7 @@ const Header = ({ setCurrentView, cartItemCount, searchTerm, setSearchTerm }) =>
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo/Nombre de la tienda */}
           <div
@@ -77,6 +79,26 @@ const Header = ({ setCurrentView, cartItemCount, searchTerm, setSearchTerm }) =>
                 </span>
               )}
             </button>
+
+            {/* Auth Links */}
+            {currentUser ? (
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <span className="text-sm text-gray-700 hidden sm:inline">Hola, {currentUser.nombre}!</span>
+                <button 
+                  onClick={logoutUser}
+                  className="text-gray-600 hover:text-red-600 transition-colors px-2 sm:px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={() => setCurrentView('login')}
+                className="text-gray-600 hover:text-red-600 transition-colors px-2 sm:px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              >
+                Login
+              </button>
+            )}
           </nav>
         </div>
       </div>
